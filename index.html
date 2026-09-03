@@ -1,61 +1,1069 @@
-from pathlib import Path
-import re, shutil, zipfile
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Grill — Restaurant Project</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-src_html = Path("/mnt/data/neon_grill_v2/index.html")
-src_logo = Path("/mnt/data/59d7946e-7c7b-4f61-95b8-e967f3878255.png")
+<header class="nav">
+  <a class="brand" href="#home">
+    <img class="nav-logo" src="assets/logo.png" alt="Neon Grill logo">
+    <span>NEON GRILL</span>
+  </a>
 
-repo = Path("/mnt/data/neon-grill-repository")
-assets = repo / "assets"
-assets.mkdir(parents=True, exist_ok=True)
+  <nav class="nav-links">
+    <a href="#concept">Concept</a>
+    <a href="#identity">Identity</a>
+    <a href="#menu">Menu</a>
+    <a href="#tasks">Tasks</a>
+    <a href="#meetings">Meetings</a>
+    <a href="#reflection">Reflection</a>
+  </nav>
 
-html = src_html.read_text(encoding="utf-8")
+  <button id="openCart" class="order-pill">
+    ORDER <b id="cartCount">0</b>
+  </button>
+</header>
 
-# Extract <style>...</style>
-style_match = re.search(r"<style>(.*?)</style>", html, re.S)
-css = style_match.group(1).strip() if style_match else ""
+<main>
 
-# Extract final <script>...</script> before body end
-script_matches = re.findall(r"<script>(.*?)</script>", html, re.S)
-js = script_matches[-1].strip() if script_matches else ""
+<section id="home" class="hero">
 
-# Remove inline style/script and link external files
-html_clean = re.sub(
-    r"<style>.*?</style>",
-    '<link rel="stylesheet" href="styles.css">',
-    html,
-    count=1,
-    flags=re.S
-)
-html_clean = re.sub(
-    r"<script>.*?</script>",
-    '<script src="script.js"></script>',
-    html_clean,
-    count=1,
-    flags=re.S
-)
+  <div class="hero-copy">
 
-# Ensure logo references point to assets
-html_clean = html_clean.replace('src="neon-grill-logo.png"', 'src="assets/logo.png"')
+    <p class="kicker">
+      RETRO DINER × DIGITAL EXPERIENCE
+    </p>
 
-# Save
-(repo / "index.html").write_text(html_clean, encoding="utf-8")
-(repo / "styles.css").write_text(css + "\n", encoding="utf-8")
-(repo / "script.js").write_text(js + "\n", encoding="utf-8")
-shutil.copy2(src_logo, assets / "logo.png")
-(repo / ".nojekyll").write_text("", encoding="utf-8")
+    <h1>
+      Welcome to <span>Neon Grill.</span>
+    </h1>
 
-readme = """# Neon Grill
+    <p>
+      A retro-futuristic burger restaurant inspired by neon diners,
+      arcade culture and modern street food. Designed to feel like a
+      place you would want to visit, photograph and share.
+    </p>
 
-Website for the Digital Citizenship themed restaurant project.
+    <div class="hero-actions">
 
-## Repository structure
+      <a href="#menu" class="btn primary">
+        Explore the menu →
+      </a>
 
-```text
-neon-grill/
-├── index.html
-├── styles.css
-├── script.js
-├── .nojekyll
-├── README.md
-└── assets/
-    └── logo.png
+      <a href="#concept" class="btn secondary">
+        Discover the concept
+      </a>
+
+    </div>
+
+    <div class="metrics">
+
+      <div class="metric">
+        <strong>15+</strong>
+        <span>Menu products</span>
+      </div>
+
+      <div class="metric">
+        <strong>2</strong>
+        <span>Team checkpoints</span>
+      </div>
+
+      <div class="metric">
+        <strong>100%</strong>
+        <span>Consistent visual identity</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="hero-art">
+
+    <div class="orbit">
+
+      <img
+        class="hero-logo"
+        src="assets/logo.png"
+        alt="Neon Grill logo"
+      >
+
+      <div class="float-chip fc1">
+        <b>Signature Burger</b>
+        <span>Classic + neon sauce</span>
+      </div>
+
+      <div class="float-chip fc2">
+        <b>Interactive Menu</b>
+        <span>Live order total</span>
+      </div>
+
+      <div class="float-chip fc3">
+        <b>Opening Concept</b>
+        <span>Pachuca, Hidalgo</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="location">
+
+  <div class="location-card">
+
+    <div>
+
+      <small>
+        Restaurant location
+      </small>
+
+      <strong>
+        Zona Plateada, Pachuca, Hidalgo, México
+      </strong>
+
+    </div>
+
+    <a
+      class="btn secondary"
+      target="_blank"
+      rel="noreferrer"
+      href="https://www.google.com/maps/search/?api=1&query=Zona+Plateada+Pachuca+Hidalgo"
+    >
+      Open in Google Maps ↗
+    </a>
+
+  </div>
+
+</section>
+
+
+<section id="concept">
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        01 — THEME & CONCEPT
+      </p>
+
+      <h2>
+        A diner from the future.
+      </h2>
+
+    </div>
+
+    <p class="section-copy">
+
+      We chose a retro-futuristic theme because it gives every
+      design decision a clear direction: lights, colors, décor,
+      menu, music, packaging and social media.
+
+    </p>
+
+  </div>
+
+
+  <div class="concept-grid">
+
+    <article class="concept-copy card">
+
+      <h3>
+        Why Neon Grill?
+      </h3>
+
+      <p>
+
+        Our concept combines the comfort of a classic American
+        diner with a futuristic, digital-first identity.
+
+        Customers are not only buying food: they are entering an
+        experience built around visual impact, nostalgia and
+        technology.
+
+      </p>
+
+      <p>
+
+        The theme is specific enough to maintain visual consistency
+        while still allowing us to create promotions, merchandise,
+        an arcade area and social media content.
+
+      </p>
+
+      <div class="tag-row">
+
+        <span class="tag">Neon</span>
+        <span class="tag">Arcade</span>
+        <span class="tag">Burgers</span>
+        <span class="tag">Retro</span>
+        <span class="tag">Street food</span>
+        <span class="tag">Digital</span>
+
+      </div>
+
+    </article>
+
+
+    <div class="mood-grid">
+
+      <div class="mood big m1">
+        <strong>
+          Neon nights & arcade culture
+        </strong>
+      </div>
+
+      <div class="mood m2">
+        <strong>
+          Classic diner food
+        </strong>
+      </div>
+
+      <div class="mood m3">
+        <strong>
+          Modern social-media vibe
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="identity" class="identity">
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        02 — VISUAL IDENTITY
+      </p>
+
+      <h2>
+        One brand. One vibe.
+      </h2>
+
+    </div>
+
+    <p class="section-copy">
+
+      The same color system, typography, lighting style and tone
+      appears across the site, promotion, menu and restaurant décor.
+
+    </p>
+
+  </div>
+
+
+  <div class="identity-grid">
+
+    <article class="identity-card card">
+
+      <div class="logo-showcase">
+
+        <img
+          src="assets/logo.png"
+          alt="Neon Grill logo"
+        >
+
+      </div>
+
+      <h3>
+        Official Logo
+      </h3>
+
+      <p>
+        A compact NG monogram made to work on menus,
+        packaging, signs and social media.
+      </p>
+
+    </article>
+
+
+    <article class="identity-card card">
+
+      <h3>
+        Color palette
+      </h3>
+
+      <div class="palette">
+
+        <span class="swatch sw1"></span>
+        <span class="swatch sw2"></span>
+        <span class="swatch sw3"></span>
+        <span class="swatch sw4"></span>
+        <span class="swatch sw5"></span>
+
+      </div>
+
+      <p>
+        #08090D · #FF3CAC · #2EE6FF · #C7FF44 · #F8F5EE
+      </p>
+
+    </article>
+
+
+    <article class="identity-card card">
+
+      <div class="mascot">
+        🤖🍔
+      </div>
+
+      <h3>
+        Creative extra: NEO
+      </h3>
+
+      <p>
+        Our burger-bot mascot can appear on stickers,
+        merchandise, promotions and social media.
+      </p>
+
+    </article>
+
+  </div>
+
+
+  <div class="brand-banner">
+
+    <div>
+
+      <p class="kicker">
+        VISUAL BANNER
+      </p>
+
+      <h3>
+        TASTE THE FUTURE.
+      </h3>
+
+      <p>
+        Burgers • Fries • Shakes • Arcade • Neon Nights
+      </p>
+
+    </div>
+
+    <div class="banner-stamp">
+      NEON<br>
+      GRILL<br>
+      2026
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="menu">
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        03 — MENU
+      </p>
+
+      <h2>
+        Pick it. Build it. Order it.
+      </h2>
+
+    </div>
+
+    <p class="section-copy">
+
+      The original App Lab calculator was upgraded into a
+      full interactive menu with 15 products and a live
+      shopping cart.
+
+    </p>
+
+  </div>
+
+
+  <div class="menu-toolbar" id="filters">
+
+    <button
+      class="filter active"
+      data-filter="all"
+    >
+      All
+    </button>
+
+    <button
+      class="filter"
+      data-filter="main"
+    >
+      Burgers & mains
+    </button>
+
+    <button
+      class="filter"
+      data-filter="side"
+    >
+      Sides
+    </button>
+
+    <button
+      class="filter"
+      data-filter="drink"
+    >
+      Drinks
+    </button>
+
+    <button
+      class="filter"
+      data-filter="dessert"
+    >
+      Desserts
+    </button>
+
+  </div>
+
+
+  <div
+    class="menu-grid"
+    id="menuGrid"
+  ></div>
+
+
+  <div class="promo">
+
+    <div>
+
+      <p class="kicker">
+        PROMOTION POSTER
+      </p>
+
+      <h3>
+        2×1 NEON THURSDAYS
+      </h3>
+
+      <p>
+        Buy one selected burger and get the second one free
+        from 4:00 PM to 7:00 PM.
+      </p>
+
+    </div>
+
+    <div class="promo-badge">
+      2×1
+    </div>
+
+  </div>
+
+</section>
+
+
+<section
+  id="tasks"
+  class="tasks"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        04 — PENDING TASKS
+      </p>
+
+      <h2>
+        Everyone knows what comes next.
+      </h2>
+
+    </div>
+
+    <p class="section-copy">
+      A clear ownership table helps the team avoid
+      duplicated work and missed deadlines.
+    </p>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Task</th>
+          <th>Owner</th>
+          <th>Deadline</th>
+          <th>Platform section</th>
+          <th>Status</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr>
+
+          <td>
+            Website + order system
+          </td>
+
+          <td>
+            Ruben
+          </td>
+
+          <td>
+            Week 1
+          </td>
+
+          <td>
+            Homepage / Menu
+          </td>
+
+          <td>
+            <span class="status done">
+              Done
+            </span>
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Final Canva logo
+          </td>
+
+          <td>
+            Member 2
+          </td>
+
+          <td>
+            Week 1
+          </td>
+
+          <td>
+            Visual Identity
+          </td>
+
+          <td>
+            <span class="status progress">
+              In progress
+            </span>
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Menu photos / product visuals
+          </td>
+
+          <td>
+            Member 3
+          </td>
+
+          <td>
+            Week 2
+          </td>
+
+          <td>
+            Menu
+          </td>
+
+          <td>
+            <span class="status pending">
+              Pending
+            </span>
+          </td>
+
+        </tr>
+
+
+        <tr>
+
+          <td>
+            Investor presentation script
+          </td>
+
+          <td>
+            Member 4
+          </td>
+
+          <td>
+            Week 3
+          </td>
+
+          <td>
+            Presentation
+          </td>
+
+          <td>
+            <span class="status pending">
+              Pending
+            </span>
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<section id="meetings">
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        05 — MEETINGS
+      </p>
+
+      <h2>
+        Two checkpoints before launch.
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="meeting-grid">
+
+
+    <article class="meeting card">
+
+      <div class="date">
+
+        <b>
+          09
+        </b>
+
+        <span>
+          SEP
+        </span>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Concept & Design Review
+        </h3>
+
+        <p>
+
+          Class time · 10:00 AM
+
+          <br>
+
+          Review theme, roles, palette,
+          logo and first menu draft.
+
+        </p>
+
+      </div>
+
+    </article>
+
+
+    <article class="meeting card">
+
+      <div class="date">
+
+        <b>
+          16
+        </b>
+
+        <span>
+          SEP
+        </span>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Final Pitch Rehearsal
+        </h3>
+
+        <p>
+
+          Class time · 10:00 AM
+
+          <br>
+
+          Check the website, visual consistency
+          and investor presentation.
+
+        </p>
+
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+<section
+  id="reflection"
+  class="reflection"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <p class="kicker">
+        06 — REFLECTION
+      </p>
+
+      <h2>
+        What we learned.
+      </h2>
+
+    </div>
+
+  </div>
+
+
+  <div class="reflection-grid">
+
+
+    <article class="reflection-card card">
+
+      <div class="ref-number">
+        01
+      </div>
+
+      <h3>
+        Organization & Collaboration
+      </h3>
+
+      <p>
+
+        The platform helped us divide responsibilities,
+        keep deadlines visible and centralize ideas instead
+        of losing information across different messages
+        and files.
+
+      </p>
+
+    </article>
+
+
+    <article class="reflection-card card">
+
+      <div class="ref-number">
+        02
+      </div>
+
+      <h3>
+        Visual Consistency
+      </h3>
+
+      <p>
+
+        We learned that repeating the same colors,
+        typography, image style and tone makes a project
+        feel more professional and makes the brand easier
+        to recognize.
+
+      </p>
+
+    </article>
+
+
+    <article class="reflection-card card">
+
+      <div class="ref-number">
+        03
+      </div>
+
+      <h3>
+        Digital Citizenship
+      </h3>
+
+      <p>
+
+        We promoted respect and responsibility by assigning
+        clear roles, giving constructive feedback, crediting
+        each person's work and making responsible edits to
+        shared content.
+
+      </p>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+<section class="invest">
+
+  <p class="kicker">
+    STEP 3 — INVESTOR PRESENTATION
+  </p>
+
+  <h2>
+    Neon Grill is more than a restaurant.
+  </h2>
+
+  <p class="section-copy">
+
+    It is a recognizable experience with a clear concept,
+    shareable visual identity, interactive ordering system
+    and a menu that can scale.
+
+  </p>
+
+
+  <div class="invest-points">
+
+    <div class="invest-point card">
+
+      <b>
+        Distinct concept
+      </b>
+
+      <span>
+        Easy to remember and market
+      </span>
+
+    </div>
+
+
+    <div class="invest-point card">
+
+      <b>
+        Digital-first
+      </b>
+
+      <span>
+        Interactive menu and modern experience
+      </span>
+
+    </div>
+
+
+    <div class="invest-point card">
+
+      <b>
+        Shareable brand
+      </b>
+
+      <span>
+        Built for social content
+      </span>
+
+    </div>
+
+
+    <div class="invest-point card">
+
+      <b>
+        Scalable menu
+      </b>
+
+      <span>
+        Simple products with broad appeal
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="ask">
+
+    NEON GRILL — Turn dinner into an experience.
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+  <span>
+    NEON GRILL © 2026
+  </span>
+
+  <span>
+    Digital Citizenship Restaurant Project
+  </span>
+
+  <span>
+    Designed for class presentation
+  </span>
+
+</footer>
+
+
+<div
+  class="overlay"
+  id="overlay"
+></div>
+
+
+<aside
+  class="cart"
+  id="cart"
+>
+
+  <div class="cart-head">
+
+    <div>
+
+      <p class="kicker">
+        YOUR ORDER
+      </p>
+
+      <h2 style="font-size:2.7rem">
+        Checkout
+      </h2>
+
+    </div>
+
+    <button
+      class="close"
+      id="closeCart"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div
+    class="cart-items"
+    id="cartItems"
+  ></div>
+
+
+  <div class="cart-summary">
+
+    <div class="sum-row">
+
+      <span>
+        Subtotal
+      </span>
+
+      <b id="subtotal">
+        $0
+      </b>
+
+    </div>
+
+
+    <div class="sum-row">
+
+      <span>
+        Service (5%)
+      </span>
+
+      <b id="service">
+        $0
+      </b>
+
+    </div>
+
+
+    <div class="sum-row total">
+
+      <span>
+        Total
+      </span>
+
+      <b id="total">
+        $0
+      </b>
+
+    </div>
+
+
+    <div class="cart-actions">
+
+      <button
+        class="btn secondary"
+        id="clearCart"
+      >
+        Clear
+      </button>
+
+      <button
+        class="btn primary"
+        id="confirmOrder"
+      >
+        Confirm order
+      </button>
+
+    </div>
+
+  </div>
+
+</aside>
+
+
+<div
+  class="modal"
+  id="modal"
+>
+
+  <div class="check">
+    ✓
+  </div>
+
+  <p class="kicker">
+    DEMO ORDER COMPLETE
+  </p>
+
+  <h2 style="font-size:2.8rem">
+    Order confirmed.
+  </h2>
+
+  <p>
+
+    Your interactive ordering system is working correctly.
+    This is a demonstration for the restaurant project.
+
+  </p>
+
+  <button
+    class="btn primary"
+    id="closeModal"
+  >
+    Done
+  </button>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
