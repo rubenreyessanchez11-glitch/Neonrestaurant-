@@ -1,0 +1,61 @@
+from pathlib import Path
+import re, shutil, zipfile
+
+src_html = Path("/mnt/data/neon_grill_v2/index.html")
+src_logo = Path("/mnt/data/59d7946e-7c7b-4f61-95b8-e967f3878255.png")
+
+repo = Path("/mnt/data/neon-grill-repository")
+assets = repo / "assets"
+assets.mkdir(parents=True, exist_ok=True)
+
+html = src_html.read_text(encoding="utf-8")
+
+# Extract <style>...</style>
+style_match = re.search(r"<style>(.*?)</style>", html, re.S)
+css = style_match.group(1).strip() if style_match else ""
+
+# Extract final <script>...</script> before body end
+script_matches = re.findall(r"<script>(.*?)</script>", html, re.S)
+js = script_matches[-1].strip() if script_matches else ""
+
+# Remove inline style/script and link external files
+html_clean = re.sub(
+    r"<style>.*?</style>",
+    '<link rel="stylesheet" href="styles.css">',
+    html,
+    count=1,
+    flags=re.S
+)
+html_clean = re.sub(
+    r"<script>.*?</script>",
+    '<script src="script.js"></script>',
+    html_clean,
+    count=1,
+    flags=re.S
+)
+
+# Ensure logo references point to assets
+html_clean = html_clean.replace('src="neon-grill-logo.png"', 'src="assets/logo.png"')
+
+# Save
+(repo / "index.html").write_text(html_clean, encoding="utf-8")
+(repo / "styles.css").write_text(css + "\n", encoding="utf-8")
+(repo / "script.js").write_text(js + "\n", encoding="utf-8")
+shutil.copy2(src_logo, assets / "logo.png")
+(repo / ".nojekyll").write_text("", encoding="utf-8")
+
+readme = """# Neon Grill
+
+Website for the Digital Citizenship themed restaurant project.
+
+## Repository structure
+
+```text
+neon-grill/
+├── index.html
+├── styles.css
+├── script.js
+├── .nojekyll
+├── README.md
+└── assets/
+    └── logo.png
